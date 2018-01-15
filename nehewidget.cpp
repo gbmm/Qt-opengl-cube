@@ -15,7 +15,6 @@ NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
     ROTATE_LAYER = zfirst;
     xyz = Z;
     xRoll = yRoll = zRoll = 0;
-
     setGeometry( 100, 100, 640, 480 );
     initCube();
     getLayerCubeZ(rotatecube,othercube,ROTATE_LAYER);
@@ -291,7 +290,7 @@ void NeHeWidget::paintGL()
     //glEnd();
 
     //xRot += xSpeed;
-    yRot += ySpeed;
+    //yRot += ySpeed;
 }
 
 void NeHeWidget::initializeGL()
@@ -347,6 +346,45 @@ void NeHeWidget::rotateCubef(ANGLE angle, LAYER layer, XYZ t)
     }
     timeLine->setFrameRange(0, angle);
     timeLine->start();
+}
+
+//鼠标控制
+void NeHeWidget::mousePressEvent(QMouseEvent *e)
+{
+    bMousePress = true;
+    pointStart = e->pos();
+}
+
+void NeHeWidget::mouseMoveEvent(QMouseEvent *e)
+{
+    if(bMousePress)
+    {
+        QPoint tmp = pointStart - e->pos();
+        if(abs(tmp.x()) > abs(tmp.y()))
+        {
+            //x方向
+            yRot += ((int)(4*(tmp.x()/3.0)))%360;
+        }
+        else
+        {
+            //y方向
+            xRot += ((int)(4*(tmp.y()/3.0)))%360;
+        }
+        pointStart = e->pos();
+        updateGL();
+    }
+}
+
+void NeHeWidget::mouseReleaseEvent(QMouseEvent *)
+{
+    bMousePress = false;
+}
+
+//鼠标滚轮放大缩小
+void NeHeWidget::wheelEvent(QWheelEvent *e)
+{
+    zoom +=e->delta()/abs(e->delta());
+    updateGL();
 }
 
 //键盘的控制

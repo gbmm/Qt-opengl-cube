@@ -7,6 +7,9 @@
 #include<QTimeLine>
 #include<math.h>
 #include "cube.h"
+#include <QMouseEvent>
+#include <QWheelEvent>
+#include <QPoint>
 
 class NeHeWidget : public QGLWidget
 {
@@ -28,13 +31,15 @@ protected:
   void initializeGL();
   void paintGL();
   void resizeGL( int width, int height );
-  
+  void mousePressEvent(QMouseEvent *);
+  void mouseMoveEvent(QMouseEvent *);
+  void mouseReleaseEvent(QMouseEvent *);
+  void wheelEvent(QWheelEvent *);
   void keyPressEvent( QKeyEvent *e );
   void loadGLTextures();
 public:
   void initCube();
   void changeCubeColor(ANGLE angle,XYZ xyz,Cube *);
-public:
   void drawOneCube(Cube *,GLfloat x,GLfloat y,GLfloat z);
 
   //获取要旋转的方块，p要旋转的9个方块 other不旋转的18个方块
@@ -48,7 +53,7 @@ public slots:
 protected:
   Cube cube[27];
   bool fullscreen;
-  GLfloat xRot, yRot, zRot;
+  GLfloat xRot, yRot, zRot;//旋转的角度
   GLfloat zoom;
   GLfloat xSpeed, ySpeed;
   GLuint texture[6];
@@ -62,6 +67,9 @@ protected:
   XYZ xyz;
   GLfloat xRoll,yRoll,zRoll;//绕某一坐标轴旋转 比如xRoll=1时绕x轴旋转
   Cube *rotatecube[9],*othercube[18];
+  //鼠标操作
+  QPoint pointStart;//鼠标移动开始与起始值
+  bool bMousePress;//是否按下鼠标
 };
 
 #endif//NEHEWIDGET_H
