@@ -1,24 +1,4 @@
-/*
-
-    Qt OpenGL Tutorial - Lesson 07
-
-    nehewidget.cpp
-    v 1.00
-    2002/12/19
-
-    Copyright (C) 2002 Cavendish
-                       cavendish@qiliang.net
-                       http://www.qiliang.net/nehe_qt
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-*/
-
 #include <qimage.h>
-
 #include "nehewidget.h"
 
 NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
@@ -325,9 +305,9 @@ void NeHeWidget::initializeGL()
     glDepthFunc( GL_LEQUAL );
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
-    glLightfv( GL_LIGHT1, GL_AMBIENT, lightAmbient );
+    /*glLightfv( GL_LIGHT1, GL_AMBIENT, lightAmbient );
     glLightfv( GL_LIGHT1, GL_DIFFUSE, lightDiffuse );
-    glLightfv( GL_LIGHT1, GL_POSITION, lightPosition );
+    glLightfv( GL_LIGHT1, GL_POSITION, lightPosition );*/
 
     glEnable( GL_LIGHT1 );
 }
