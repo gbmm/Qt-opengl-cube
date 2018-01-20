@@ -1,4 +1,5 @@
 #include "cube.h"
+#include <qmath.h>
 
 Cube::Cube()
 {
@@ -18,6 +19,27 @@ void Cube::setXYZ(GLfloat x1, GLfloat y1, GLfloat z1)
     x=x1;
     y=y1;
     z=z1;
+}
+
+Cube *Cube::getCubeFromXYZ(GLfloat x1, GLfloat y1, GLfloat z1)
+{
+    if(qAbs(x1-x)<0.009 && qAbs(y1-y)<0.009 && qAbs(z1-z)<0.009)
+    {
+        return this;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+void Cube::copy(Cube *p)
+{
+    p->setXYZ(this->x,this->y,this->z);
+    for(int i=0;i<6;i++)
+    {
+        p->color[i] = color[i];
+    }
 }
 
 void Cube::initColor()
@@ -74,6 +96,8 @@ void Cube::setColor(Color c[])
      color[4] = color[2];
      color[2] = color[5];
      color[5] = tmp;
+
+
  }
 
 void Cube::exchange2Color(int index1, int index2)

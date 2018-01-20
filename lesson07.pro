@@ -20,8 +20,13 @@ TEMPLATE	= app
 QT+=opengl
 CONFIG		+= qt opengl warn_on
 HEADERS		= nehewidget.h \
-    cube.h
+    cube.h \
+    mainwidget.h
 SOURCES		= nehewidget.cpp \
 		  main.cpp \
-    cube.cpp
+    cube.cpp \
+    mainwidget.cpp
 TARGET		= lesson07
+
+FORMS += \
+    mainwidget.ui

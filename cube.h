@@ -17,6 +17,8 @@ public:
     const Color* getColor()const;
     void draw();
     void setXYZ(GLfloat x, GLfloat y,GLfloat z);
+    Cube *getCubeFromXYZ(GLfloat x,GLfloat y,GLfloat z);
+    void copy(Cube *);
     void setAngle(GLfloat angle);
     void exchange2Color(int index1,int index2);
     void rotateColor2Angle90X();

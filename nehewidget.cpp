@@ -19,10 +19,11 @@ NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
     initCube();
     getLayerCubeZ(rotatecube,othercube,ROTATE_LAYER);
 
-    timeLine = new QTimeLine(1500, this);
+    timeLine = new QTimeLine(300, this);
     connect(timeLine, SIGNAL(frameChanged(int)), this, SLOT(rotateCube(int)));
     connect(timeLine,SIGNAL(finished()),this,SLOT(rotateCubeFinished()));
 }
+
 
 NeHeWidget::~NeHeWidget()
 {
@@ -121,44 +122,115 @@ void NeHeWidget::drawOneCube(Cube *b, GLfloat x, GLfloat y, GLfloat z)//
 //参考http://blog.sina.com.cn/s/blog_3fd642cf0101cc8w.html
 void NeHeWidget::rotateCubeFinished()
 {
+    for(int i=0;i<9;i++)
+    {
+        rotatecube[i]->copy(&tmprotatecube[i]);
+    }
+
     double tmpcos = cos(rotateangle*pi/180)*100;
     double tmpsin = sin(rotateangle*pi/180)*100;
     tmpcos = qRound(tmpcos)/100;
     tmpsin = qRound(tmpsin)/100;
-    //01 前后 45左右 23上下
+    //0前 1后 2下 3上 4右 5左
     switch(xyz)
     {
     case X:
         for(int i=0;i<9;i++)
         {
+            GLfloat tmpx = rotatecube[i]->y;
+            GLfloat tmpy = rotatecube[i]->z;
             double y = rotatecube[i]->y*tmpcos + rotatecube[i]->z*tmpsin;
             double z = rotatecube[i]->z*tmpcos - rotatecube[i]->y*tmpsin;
-            rotatecube[i]->setXYZ(rotatecube[i]->x,(GLfloat)y,(GLfloat)z);
-            changeCubeColor(rotateangle,X,rotatecube[i]);
+            //
+            //changeCubeColor(rotateangle,X,rotatecube[i]);
+            //qDebug()<<"-----"<<tmpx<<tmpy<<y<<z;
+            Cube *ct = findCube(rotatecube[i]->x,(GLfloat)(-y),(GLfloat)(-z));
+            if (ct!= NULL){
+                ct->color[4] = tmprotatecube[i].color[4];
+                ct->color[5] = tmprotatecube[i].color[5];
+
+                ct->color[0] = tmprotatecube[i].color[2];
+                ct->color[1] = tmprotatecube[i].color[3];
+                ct->color[2] = tmprotatecube[i].color[1];
+                ct->color[3] = tmprotatecube[i].color[0];
+            }
+           // tmprotatecube[i].setXYZ(rotatecube[i]->x,(GLfloat)(-y),(GLfloat)(-z));
         };
         break;
     case Y:
         for(int i=0;i<9;i++)
         {
+            GLfloat tmpx = rotatecube[i]->x;
+            GLfloat tmpy = rotatecube[i]->z;
+
             double x = rotatecube[i]->x*tmpcos + rotatecube[i]->z*tmpsin;
             double z = rotatecube[i]->z*tmpcos - rotatecube[i]->x*tmpsin;
-            rotatecube[i]->setXYZ((GLfloat)x,rotatecube[i]->y,(GLfloat)z);
-            changeCubeColor(rotateangle,Y,rotatecube[i]);
+
+            //qDebug()<<"-----"<<tmpx<<tmpy<<x<<z;
+            //changeCubeColor(rotateangle,Y,rotatecube[i]);
+            Cube *ct = findCube((GLfloat)(x),rotatecube[i]->y,(GLfloat)(z));
+            if (ct!= NULL){
+                //0前 1后 2下 3上 4右 5左
+                ct->color[2] = tmprotatecube[i].color[2];
+                ct->color[3] = tmprotatecube[i].color[3];
+
+                ct->color[0] = tmprotatecube[i].color[4];
+                ct->color[1] = tmprotatecube[i].color[5];
+                ct->color[4] = tmprotatecube[i].color[1];
+                ct->color[5] = tmprotatecube[i].color[0];
+            }
+           //tmprotatecube[i].setXYZ((GLfloat)(-x),rotatecube[i]->y,(GLfloat)(-z));
         };
         break;
     case Z:
         for(int i=0;i<9;i++)
         {
+            GLfloat tmpx = rotatecube[i]->x;
+            GLfloat tmpy = rotatecube[i]->y;
             double x = rotatecube[i]->x*tmpcos + rotatecube[i]->y*tmpsin;
             double y = rotatecube[i]->y*tmpcos - rotatecube[i]->x*tmpsin;
-            rotatecube[i]->setXYZ((GLfloat)x,(GLfloat)y,rotatecube[i]->z);
-            changeCubeColor(rotateangle,Z,rotatecube[i]);
+            //qDebug()<<"-----"<<tmpx<<tmpy<<x<<y;
+
+            //changeCubeColor(rotateangle,Z,rotatecube[i]);
+            //qDebug()<<"--"<<rotatecube[i]->x<<rotatecube[i]->y<<rotatecube[i]->z;
+            Cube *ct = findCube((GLfloat)(-x),(GLfloat)(-y),rotatecube[i]->z);
+            if (ct!= NULL){
+                //0前 1后 2下 3上 4右 5左
+                ct->color[0] = tmprotatecube[i].color[0];
+                ct->color[1] = tmprotatecube[i].color[1];
+
+                ct->color[2] = tmprotatecube[i].color[5];
+                ct->color[3] = tmprotatecube[i].color[4];
+                ct->color[4] = tmprotatecube[i].color[2];
+                ct->color[5] = tmprotatecube[i].color[3];
+            }
+            //tmprotatecube[i].setXYZ((GLfloat)(-x),(GLfloat)(-y),rotatecube[i]->z);
         };
         break;
     }
+    for(int i=0;i<9;i++)
+    {
+        //rotatecube[i]->setXYZ(tmprotatecube[i].x,tmprotatecube[i].y,tmprotatecube[i].z);
+    }
+    //initCube();
+    //qDebug()<<rotatecube[26]->x<<rotatecube[26]->y<<rotatecube[26]->z;
     rotateangle = A_0;
     rotateAngle = 0;
-    //01 前后 45左右 23上下
+    updateGL();
+    //0前 1后 2下 3上 4右 5左
+}
+
+Cube *NeHeWidget::findCube(GLfloat x, GLfloat y, GLfloat z)
+{
+    for(int i=0;i<9;i++) {
+        // qDebug()<<"++"<<rotatecube[i]->x<<rotatecube[i]->y<<rotatecube[i]->z;
+        Cube *p = rotatecube[i]->getCubeFromXYZ(x,y,z);
+        if(p != NULL)
+            return p;
+        //qDebug()<<"++"<<rotatecube[i]->x<<rotatecube[i]->y<<rotatecube[i]->z;
+    }
+    qDebug()<<"+++++++++++++++++++++++++++++++++++++++++++++++++"<<x<<y<<z;
+    return NULL;
 }
 
 //计算旋转颜色的变化
@@ -215,7 +287,7 @@ void NeHeWidget::getLayerCubeX(Cube **p,Cube **other, LAYER layer)
     int n1=0,n2=0;
     for(int i=0;i<27;i++)
     {
-        qDebug()<<(int)cube[i].x<<layer;
+        //qDebug()<<(int)cube[i].x<<layer;
         if((int)cube[i].x == ((int)layer)){
             p[n1++]=&cube[i];
 
@@ -223,7 +295,7 @@ void NeHeWidget::getLayerCubeX(Cube **p,Cube **other, LAYER layer)
             other[n2++]=&cube[i];
         }
     }
-    qDebug()<<n1<<n2;
+    //qDebug()<<n1<<n2;
 }
 
 void NeHeWidget::getLayerCubeY(Cube **p,Cube **other, LAYER layer)
@@ -259,13 +331,13 @@ void NeHeWidget::paintGL()
     //绘制坐标轴，方便调试
     glLineWidth(2);
     glBegin(GL_LINES);
-    glColor3f(1,0,0); glVertex3f(0,-6,0);
+    glColor3f(1,0,0); glVertex3f(0,0,0);//y
     glColor3f(1,0,0); glVertex3f(0,6,0);
 
-    glColor3f(0,1,0); glVertex3f(-6,0,0);
+    glColor3f(0,1,0); glVertex3f(0,0,0);//x
     glColor3f(0,1,0); glVertex3f(6,0,0);
 
-    glColor3f(0,0,1); glVertex3f(0,0,-6);
+    glColor3f(0,0,1); glVertex3f(0,0,0);//z
     glColor3f(0,0,1); glVertex3f(0,0,6);
 
     glEnd();
