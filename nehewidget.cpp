@@ -19,7 +19,7 @@ NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
     initCube();
     getLayerCubeZ(rotatecube,othercube,ROTATE_LAYER);
 
-    timeLine = new QTimeLine(300, this);
+    timeLine = new QTimeLine(200, this);
     connect(timeLine, SIGNAL(frameChanged(int)), this, SLOT(rotateCube(int)));
     connect(timeLine,SIGNAL(finished()),this,SLOT(rotateCubeFinished()));
 }
@@ -48,7 +48,7 @@ void NeHeWidget::drawOneCube(Cube *b, GLfloat x, GLfloat y, GLfloat z)//
     y=y-0.5;
     z=z-0.5;
     const Cube::Color *color = b->getColor();
-    glBindTexture( GL_TEXTURE_2D, texture[color[0]] );
+    glBindTexture( GL_TEXTURE_2D, texture[color[1]] );
     glBegin( GL_QUADS );
     //后面 黄色
     glNormal3f( x, y, z );
@@ -59,7 +59,7 @@ void NeHeWidget::drawOneCube(Cube *b, GLfloat x, GLfloat y, GLfloat z)//
 
     glEnd();
 
-    glBindTexture( GL_TEXTURE_2D, texture[color[1]] );
+    glBindTexture( GL_TEXTURE_2D, texture[color[0]] );
     glBegin( GL_QUADS );
     //前面 白色
     glNormal3f( x, y, z+1 );
@@ -149,10 +149,10 @@ void NeHeWidget::rotateCubeFinished()
                 ct->color[4] = tmprotatecube[i].color[4];
                 ct->color[5] = tmprotatecube[i].color[5];
 
-                ct->color[0] = tmprotatecube[i].color[2];
-                ct->color[1] = tmprotatecube[i].color[3];
-                ct->color[2] = tmprotatecube[i].color[1];
-                ct->color[3] = tmprotatecube[i].color[0];
+                ct->color[0] = tmprotatecube[i].color[3];
+                ct->color[1] = tmprotatecube[i].color[2];
+                ct->color[2] = tmprotatecube[i].color[0];
+                ct->color[3] = tmprotatecube[i].color[1];
             }
            // tmprotatecube[i].setXYZ(rotatecube[i]->x,(GLfloat)(-y),(GLfloat)(-z));
         };
@@ -170,14 +170,15 @@ void NeHeWidget::rotateCubeFinished()
             //changeCubeColor(rotateangle,Y,rotatecube[i]);
             Cube *ct = findCube((GLfloat)(x),rotatecube[i]->y,(GLfloat)(z));
             if (ct!= NULL){
+                //qDebug()<<"----------"<< ct->color[3]<<x<<z<< ct->y;
                 //0前 1后 2下 3上 4右 5左
                 ct->color[2] = tmprotatecube[i].color[2];
                 ct->color[3] = tmprotatecube[i].color[3];
 
-                ct->color[0] = tmprotatecube[i].color[4];
-                ct->color[1] = tmprotatecube[i].color[5];
-                ct->color[4] = tmprotatecube[i].color[1];
-                ct->color[5] = tmprotatecube[i].color[0];
+                ct->color[0] = tmprotatecube[i].color[5];
+                ct->color[1] = tmprotatecube[i].color[4];
+                ct->color[4] = tmprotatecube[i].color[0];
+                ct->color[5] = tmprotatecube[i].color[1];
             }
            //tmprotatecube[i].setXYZ((GLfloat)(-x),rotatecube[i]->y,(GLfloat)(-z));
         };
@@ -208,11 +209,6 @@ void NeHeWidget::rotateCubeFinished()
         };
         break;
     }
-    for(int i=0;i<9;i++)
-    {
-        //rotatecube[i]->setXYZ(tmprotatecube[i].x,tmprotatecube[i].y,tmprotatecube[i].z);
-    }
-    //initCube();
     //qDebug()<<rotatecube[26]->x<<rotatecube[26]->y<<rotatecube[26]->z;
     rotateangle = A_0;
     rotateAngle = 0;
@@ -233,6 +229,16 @@ Cube *NeHeWidget::findCube(GLfloat x, GLfloat y, GLfloat z)
     return NULL;
 }
 
+Cube *NeHeWidget::findCubeAll(GLfloat x, GLfloat y, GLfloat z)
+{
+    for(int i=0;i<27;i++) {
+        Cube *p = cube[i].getCubeFromXYZ(x,y,z);
+        if(p != NULL)
+            return p;
+    }
+    qDebug()<<"+++++++++++++++++++++++++++++++++++++++++++++++++"<<x<<y<<z;
+    return NULL;
+}
 //计算旋转颜色的变化
 void NeHeWidget::changeCubeColor(ANGLE angle, XYZ xyz, Cube *cube)
 {
@@ -462,7 +468,6 @@ void NeHeWidget::wheelEvent(QWheelEvent *e)
 //键盘的控制
 void NeHeWidget::keyPressEvent( QKeyEvent *e )
 {
-    int angle = 0;
     switch ( e->key() )
     {
     /*-----------绕Z轴旋转----------*/
@@ -497,35 +502,7 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
         break;
 
     /*---------------------------*/
-    case Qt::Key_Minus:
-        zoom -= 0.2;
-        updateGL();
-        break;
-    case Qt::Key_Plus:
-        zoom += 0.2;
-        updateGL();
-        break;
-    case Qt::Key_Up:
-        //rotateangle = 0;
-        ySpeed -= 0.01;
-        yRot += ySpeed;
-        updateGL();
-        break;
-    case Qt::Key_Down:
-        ySpeed += 0.01;
-        yRot -= ySpeed;
-        updateGL();
-        break;
-    case Qt::Key_Right:
-        xSpeed += 0.01;
-        xRot += xSpeed;
-        updateGL();
-        break;
-    case Qt::Key_Left:
-        xSpeed -= 0.01;
-        xRot += xSpeed;
-        updateGL();
-        break;
+
     case Qt::Key_Escape:
         close();
     }

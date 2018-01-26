@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QList>
 #include <QLabel>
+#include <QThread>
 
 namespace Ui {
 class MainWidget;
@@ -27,15 +28,28 @@ public:
     ~MainWidget();
 
     void initUI();
-
+    void rotateAngle(int angle,NeHeWidget::LAYER layer,NeHeWidget::XYZ xyz);
+    //还原第一步 黄色面的白色十字
+    bool  autoBack1zthird();
+    bool  autoBack1xthird();
+    void  autoBack1xfirst();
+    void  autoBack1yfirst();
+    void  autoBack1ythird();
+    void  autoBackCenter();
+    Cube *findCubebyXY(int x,int y);
+    bool  calAutoBack1();
 protected:
     void keyPressEvent( QKeyEvent *e );
-
+    void closeEvent(QCloseEvent *);
 public slots:
     //随机旋转操作
     void onRandBtn();
     //随机旋转定时器函数
     void onRandTimer();
+    //一次性跑完动作
+    void rotateOneTime();
+    //自动还原函数
+    void onAutobackBtn();
 private:
     Ui::MainWidget *ui;
     //opengl widget
@@ -46,6 +60,10 @@ private:
     QTimer randTimer;
     //随机旋转的所有操作任务
     QList<RotateTask> listRotateTask;
+    //自动还原按钮
+    QPushButton *autobackBtn;
+    //动画停止
+    bool bStopAnimation;
 };
 
 #endif // MAINWIDGET_H

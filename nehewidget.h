@@ -52,6 +52,7 @@ public:
 
   //根据坐标查找cube
   Cube *findCube(GLfloat x,GLfloat y,GLfloat z);
+  Cube *findCubeAll(GLfloat x,GLfloat y,GLfloat z);
 
 public slots:
   void rotateCube(int);
