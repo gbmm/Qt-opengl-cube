@@ -32,12 +32,15 @@ public:
     //还原第一步 黄色面的白色十字
     bool  autoBack1zthird();
     bool  autoBack1xthird();
-    void  autoBack1xfirst();
-    void  autoBack1yfirst();
-    void  autoBack1ythird();
+    bool  autoBack1xfirst();
+    bool  autoBack1yfirst();
+    bool  autoBack1ythird();
+    bool  autoBack1Last();
     void  autoBackCenter();
     Cube *findCubebyXY(int x,int y);
     bool  calAutoBack1();
+
+    bool  calAutoBack2();
 protected:
     void keyPressEvent( QKeyEvent *e );
     void closeEvent(QCloseEvent *);

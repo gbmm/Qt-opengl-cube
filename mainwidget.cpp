@@ -56,21 +56,43 @@ void MainWidget::rotateAngle(int angle,NeHeWidget::LAYER layer,NeHeWidget::XYZ x
 
 void MainWidget::onAutobackBtn()
 {
-   // autoBackCenter();
-
+    autoBackCenter();
     while(!calAutoBack1())
     {
         if(autoBack1zthird())break;
+        if(autoBack1xthird())break;
+        if(autoBack1xfirst())break;
+        if(autoBack1yfirst())break;
+        if(autoBack1ythird())break;
         sleep(10);
     }
+    autoBack1Last();
+
+    //第二步
+
+
     autobackBtn->setText("finish");
     qDebug()<<"---------finish------------";
 }
 
+void MainWidget::autoBack2()
+{
+    //0前 1后 2下 3上 4右 5左
+    Cube *cube1= NULL;
+
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::yfirst,NeHeWidget::zthird);
+    if(cube1->color[3]== Cube::white || cube1->color[5]==Cube::white)
+    {
+
+    }
+
+}
+
+
 bool MainWidget::calAutoBack1()
 {
     int xy[] ={1,0, 0,1, -1,0, 0,-1};
-    for(int i=0;i<4;i=i+2)
+    for(int i=0;i<8;i=i+2)
     {
         Cube *cube1 = cubeWidget->findCubeAll(xy[i],xy[i+1],NeHeWidget::zthird);
         if(cube1->color[1]!=Cube::white)return false;
@@ -94,7 +116,7 @@ void MainWidget::autoBackCenter()
         return;
     }
     cube1 = cubeWidget->findCubeAll(-1,0,0);//左面
-    qDebug()<<cube1->color[5];
+
     if(cube1->color[5]==Cube::white)
     {
         rotateAngle(90,NeHeWidget::ysecond,NeHeWidget::Y);
@@ -103,7 +125,7 @@ void MainWidget::autoBackCenter()
     }
 
     cube1 = cubeWidget->findCubeAll(1,0,0);//右面
-    qDebug()<<cube1->color[4];
+
     if(cube1->color[4]==Cube::white)
     {
         rotateAngle(270,NeHeWidget::ysecond,NeHeWidget::Y);
@@ -188,16 +210,16 @@ bool MainWidget::autoBack1xthird()
     //0前 1后 2下 3上 4右 5左
     Cube *cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,1,0);
     FIRST:
-    if(cube1->color[0]==Cube::white)
+    if(cube1->color[5]==Cube::white)
     {
         findCubebyXY(0,1);
-        rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+        rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
         rotateOneTime();
     }
     if(calAutoBack1())return true;
 
     cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,0,-1);
-    if(cube1->color[0]==Cube::white)
+    if(cube1->color[5]==Cube::white)
     {
         rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
         rotateOneTime();
@@ -205,8 +227,9 @@ bool MainWidget::autoBack1xthird()
     }
     if(calAutoBack1())return true;
 
+    SECOND:
     cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,-1,0);
-    if(cube1->color[0]==Cube::white)
+    if(cube1->color[5]==Cube::white)
     {
         findCubebyXY(0,-1);
         rotateAngle(270,NeHeWidget::ythird,NeHeWidget::Y);
@@ -215,94 +238,190 @@ bool MainWidget::autoBack1xthird()
     if(calAutoBack1())return true;
 
     cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,0,1);
-    if(cube1->color[0]==Cube::white)
+    if(cube1->color[5]==Cube::white)
     {
         findCubebyXY(-1,0);
-        rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+        rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
         rotateOneTime();
+        goto SECOND;
     }
     if(calAutoBack1())return true;
 }
 
-void MainWidget::autoBack1xfirst()
+bool MainWidget::autoBack1xfirst()
 {
-    int i = 0;
     //0前 1后 2下 3上 4右 5左
-    while(i<4)
+    Cube *cube1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,1,0);
+    FIRST:
+    if(cube1->color[4]==Cube::white)
     {
-        Cube *cube1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,1,0);
-        //qDebug()<<"x third "<<cube1->color[4];
-        if(cube1->color[5]!=Cube::white)
-        {
-            rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
-            rotateOneTime();
-        }
-        else
-        {
-             rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
-             rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
-             rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
-             rotateAngle(180,NeHeWidget::xthird,NeHeWidget::X);
-             rotateOneTime();
-             if(calAutoBack1()==NULL)return;
-             i=0;
-        }
-        i++;
+        findCubebyXY(0,1);
+        rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+        rotateOneTime();
     }
+    if(calAutoBack1())return true;
+
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,0,-1);
+    if(cube1->color[4]==Cube::white)
+    {
+        rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+        rotateOneTime();
+        goto FIRST;
+    }
+    if(calAutoBack1())return true;
+
+    SECOND:
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,-1,0);
+    if(cube1->color[4]==Cube::white)
+    {
+        findCubebyXY(0,-1);
+        rotateAngle(90,NeHeWidget::ythird,NeHeWidget::Y);
+        rotateOneTime();
+    }
+    if(calAutoBack1())return true;
+
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,0,1);
+    if(cube1->color[4]==Cube::white)
+    {
+        findCubebyXY(1,0);
+        rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+        rotateOneTime();
+        goto SECOND;
+    }
+    if(calAutoBack1())return true;
 }
 
-void MainWidget::autoBack1yfirst()
+bool MainWidget::autoBack1yfirst()
 {
-    int i = 0;
     //0前 1后 2下 3上 4右 5左
-    while(i<4)
+    Cube *cube1 = cubeWidget->findCubeAll(1,NeHeWidget::yfirst,0);
+    FIRST:
+    if(cube1->color[3]==Cube::white)
     {
-        Cube *cube1 = cubeWidget->findCubeAll(-1,NeHeWidget::yfirst,0);
-        //qDebug()<<"y first "<<cube1->color[3];
-        if(cube1->color[3]!=Cube::white )
-        {
-            rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
-            rotateOneTime();
-           // break;
-        }
-        else
-        {
-             rotateAngle(270,NeHeWidget::xthird,NeHeWidget::X);
-             rotateOneTime();
-             if(calAutoBack1()==NULL)return;
-             i=0;
-        }
-        i++;
+        findCubebyXY(1,0);
+        rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+        rotateOneTime();
     }
+    if(calAutoBack1())return true;
+
+    cube1 = cubeWidget->findCubeAll(0,NeHeWidget::yfirst,-1);
+    if(cube1->color[3]==Cube::white)
+    {
+        rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+        rotateOneTime();
+        goto FIRST;
+    }
+    if(calAutoBack1())return true;
+
+    SECOND:
+    cube1 = cubeWidget->findCubeAll(-1,NeHeWidget::yfirst,0);
+    if(cube1->color[3]==Cube::white)
+    {
+        findCubebyXY(-1,0);
+        rotateAngle(270,NeHeWidget::xthird,NeHeWidget::X);
+        rotateOneTime();
+    }
+    if(calAutoBack1())return true;
+
+    cube1 = cubeWidget->findCubeAll(0,NeHeWidget::yfirst,1);
+    if(cube1->color[3]==Cube::white)
+    {
+        findCubebyXY(0,1);
+        rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+        rotateOneTime();
+        goto SECOND;
+    }
+    if(calAutoBack1())return true;
 }
 
-void MainWidget::autoBack1ythird()
+bool MainWidget::autoBack1ythird()
 {
-    int i = 0;
     //0前 1后 2下 3上 4右 5左
-    while(i<4)
+    Cube *cube1 = cubeWidget->findCubeAll(1,NeHeWidget::ythird,0);
+    FIRST:
+    if(cube1->color[2]==Cube::white)
     {
-        Cube *cube1 = cubeWidget->findCubeAll(-1,NeHeWidget::ythird,0);
-        //qDebug()<<"y third "<<cube1->color[2];
-        if(cube1->color[2]!=Cube::white )
-        {
-            rotateAngle(90,NeHeWidget::ythird,NeHeWidget::Y);
-            rotateOneTime();
-            //break;
-        }
-        else
-        {
-             rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
-             rotateOneTime();
-             if(calAutoBack1()==NULL)return;
-             i=0;
-        }
-        i++;
+        findCubebyXY(1,0);
+        rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+        rotateOneTime();
     }
+    if(calAutoBack1())return true;
+
+    cube1 = cubeWidget->findCubeAll(0,NeHeWidget::ythird,-1);
+    if(cube1->color[2]==Cube::white)
+    {
+        rotateAngle(270,NeHeWidget::ythird,NeHeWidget::Y);
+        rotateOneTime();
+        goto FIRST;
+    }
+    if(calAutoBack1())return true;
+
+    SECOND:
+    cube1 = cubeWidget->findCubeAll(-1,NeHeWidget::ythird,0);
+    if(cube1->color[2]==Cube::white)
+    {
+        findCubebyXY(-1,0);
+        rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
+        rotateOneTime();
+    }
+    if(calAutoBack1())return true;
+
+    cube1 = cubeWidget->findCubeAll(0,NeHeWidget::ythird,1);
+    if(cube1->color[2]==Cube::white)
+    {
+        findCubebyXY(0,-1);
+        rotateAngle(270,NeHeWidget::ythird,NeHeWidget::Y);
+        rotateOneTime();
+        goto SECOND;
+    }
+    if(calAutoBack1())return true;
+}
+
+bool MainWidget::autoBack1Last()
+{
+    //0前 1后 2下 3上 4右 5左
+    //上
+    Cube *cube1 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::yfirst,NeHeWidget::zthird);
+    Cube *cube2 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::yfirst,NeHeWidget::zsecond);
+    while (!(cube1->color[3] == cube2->color[3] && cube1->color[1]==Cube::white)) {
+        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+        rotateOneTime();
+    }
+    rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+    rotateOneTime();
+    //下
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::ythird,NeHeWidget::zthird);
+    cube2 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::ythird,NeHeWidget::zsecond);
+    while (!(cube1->color[2] == cube2->color[2] && cube1->color[1]==Cube::white)) {
+        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+        rotateOneTime();
+    }
+    rotateAngle(180,NeHeWidget::ythird,NeHeWidget::Y);
+    rotateOneTime();
+    //左
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ysecond,NeHeWidget::zthird);
+    cube2 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ysecond,NeHeWidget::zsecond);
+    while (!(cube1->color[5] == cube2->color[5] && cube1->color[1]==Cube::white)) {
+        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+        rotateOneTime();
+    }
+    rotateAngle(180,NeHeWidget::xthird,NeHeWidget::X);
+    rotateOneTime();
+    //右
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ysecond,NeHeWidget::zthird);
+    cube2 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ysecond,NeHeWidget::zsecond);
+    while (!(cube1->color[4] == cube2->color[4] && cube1->color[1]==Cube::white)) {
+        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+        rotateOneTime();
+    }
+    rotateAngle(180,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateOneTime();
+    return true;
 }
 
 void MainWidget::onRandBtn()
 {
+    autobackBtn->setText("自动还原");
     randBtn->setText("旋转中...");
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     for(int i=0; i<10; i++)
