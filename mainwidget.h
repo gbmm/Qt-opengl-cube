@@ -41,6 +41,7 @@ public:
     bool  calAutoBack1();
 
     bool autoBack2();
+    bool autoBack3();
 protected:
     void keyPressEvent( QKeyEvent *e );
     void closeEvent(QCloseEvent *);
