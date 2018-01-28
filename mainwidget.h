@@ -40,7 +40,7 @@ public:
     Cube *findCubebyXY(int x,int y);
     bool  calAutoBack1();
 
-    bool  calAutoBack2();
+    bool autoBack2();
 protected:
     void keyPressEvent( QKeyEvent *e );
     void closeEvent(QCloseEvent *);
