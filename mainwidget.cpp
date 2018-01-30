@@ -72,9 +72,468 @@ void MainWidget::onAutobackBtn()
     autoBack2();
     //第三步
     autoBack3();
-
+    //第四部
+    autoBack4();
+    //第五步
+    autoBack5();
+    //第六步
+    autoBack6();
+    //第七步
+    autoBack7();
     autobackBtn->setText("finish");
     qDebug()<<"---------finish------------";
+}
+
+//第七步
+int MainWidget::getSameColorSide7(Cube *p1, Cube *p2, Cube *p3, Cube *p4,
+                                  Cube *p11, Cube *p22, Cube *p33, Cube *p44)
+{
+    int num=0;
+    if(p1->color[2] == p11->color[2])num++;
+    if(p2->color[4] == p22->color[4])num++;
+    if(p3->color[3] == p33->color[3])num++;
+    if(p4->color[5] == p44->color[5])num++;
+    return num;
+}
+
+void MainWidget::test1()
+{
+    Cube* cube5 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ythird,NeHeWidget::zthird);
+    rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
+    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(270,NeHeWidget::xthird,NeHeWidget::X);
+    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
+    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(270,NeHeWidget::xthird,NeHeWidget::X);
+    rotateOneTime();
+
+    while(cube5->color[1] != Cube::yellow)
+    {
+        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+        rotateAngle(90,NeHeWidget::zsecond,NeHeWidget::Z);
+        rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
+        rotateOneTime();
+    }
+
+
+    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateOneTime();
+}
+
+void MainWidget::test2()
+{
+    Cube* cube5 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ythird,NeHeWidget::zthird);
+    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+    rotateOneTime();
+
+    while(cube5->color[1] != Cube::yellow)
+    {
+        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+        rotateAngle(90,NeHeWidget::zsecond,NeHeWidget::Z);
+        rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
+        rotateOneTime();
+    }
+
+
+    rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+    rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+    rotateOneTime();
+}
+
+bool MainWidget::autoBack7()
+{
+    //0前 1后 2下 3上 4右 5左
+    Cube *cube1,*cube2,*cube3,*cube4;
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::ythird,NeHeWidget::zthird);
+    cube2 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ysecond,NeHeWidget::zthird);
+    cube3 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::yfirst,NeHeWidget::zthird);
+    cube4 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ysecond,NeHeWidget::zthird);
+
+    Cube *cube11,*cube22,*cube33,*cube44;
+    cube11 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::ythird,NeHeWidget::zsecond);
+    cube22 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ysecond,NeHeWidget::zsecond);
+    cube33 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::yfirst,NeHeWidget::zsecond);
+    cube44 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ysecond,NeHeWidget::zsecond);
+
+    Cube *r1,*r2;
+    r1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::yfirst,NeHeWidget::zthird);
+    r2 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::yfirst,NeHeWidget::zthird);
+
+    Cube* cube5 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ythird,NeHeWidget::zthird);
+    while(true)
+    {
+        int num = getSameColorSide7(cube1,cube2,cube3,cube4,
+                                    cube11,cube22,cube33,cube44);
+        //qDebug()<<"-----7-----"<<num;
+        if(num==4 )break;
+        if(num==1)
+        {
+            if(cube3->color[3] == cube33->color[3] && r1->color[3]==r2->color[3] && r1->color[3]==cube3->color[3])
+            {
+
+                if(cube1->color[2] == cube22->color[4])
+                {
+                    rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
+                    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xthird,NeHeWidget::X);
+                    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::xthird,NeHeWidget::X);
+                    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xthird,NeHeWidget::X);
+                    rotateOneTime();
+
+                    while(cube5->color[1] != Cube::yellow)
+                    {
+                        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                        rotateAngle(90,NeHeWidget::zsecond,NeHeWidget::Z);
+                        rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
+                        rotateOneTime();
+                    }
+
+                    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateOneTime();
+                }
+                else
+                {
+                    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateOneTime();
+
+                    while(cube5->color[1] != Cube::yellow)
+                    {
+                        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                        rotateAngle(90,NeHeWidget::zsecond,NeHeWidget::Z);
+                        rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
+                        rotateOneTime();
+                    }
+
+                    rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateOneTime();
+                }
+                continue;
+            }
+            rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateAngle(90,NeHeWidget::zsecond,NeHeWidget::Z);
+            rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
+            rotateOneTime();
+        }
+        else if(num==0)
+        {
+            rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateOneTime();
+
+            while(cube5->color[1] != Cube::yellow)
+            {
+                rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                rotateAngle(90,NeHeWidget::zsecond,NeHeWidget::Z);
+                rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
+                rotateOneTime();
+            }
+
+            rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+            rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+            rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+            rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+            rotateOneTime();
+        }
+    }
+}
+
+//第六步
+int MainWidget::getSameColorSide(Cube *p1, Cube *p2, Cube *p3, Cube *p4)
+{
+    //0前 1后 2下 3上 4右 5左
+    int num = 0;
+    if(p1->color[2] == p2->color[2]){num++;}
+    if(p2->color[4] == p3->color[4]){num++;}
+    if(p3->color[3] == p4->color[3]){num++;}
+    if(p1->color[4] == p4->color[4]){num++;}
+    return num;
+}
+
+bool MainWidget::autoBack6()
+{
+    //0前 1后 2下 3上 4右 5左
+    Cube *cube1,*cube2,*cube3,*cube4;
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ythird,NeHeWidget::zthird);
+    cube2 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ythird,NeHeWidget::zthird);
+    cube3 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::yfirst,NeHeWidget::zthird);
+    cube4 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::yfirst,NeHeWidget::zthird);
+
+    Cube *cube5,*cube6,*cube7,*cube8;
+    cube5 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::ythird,NeHeWidget::zsecond);
+    cube6 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ysecond,NeHeWidget::zsecond);
+    cube7 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::yfirst,NeHeWidget::zsecond);
+    cube8 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ysecond,NeHeWidget::zsecond);
+    while (true)
+    {
+        int num = getSameColorSide(cube1,cube2,cube3,cube4);
+        if(num==4)break;
+        if(num==1)
+        {
+            if(cube2->color[4] == cube3->color[4] &&  cube3->color[4] == cube6->color[4])
+            {
+                rotateAngle(180,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateAngle(270,NeHeWidget::ythird,NeHeWidget::Y);
+                rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateAngle(90,NeHeWidget::ythird,NeHeWidget::Y);
+                rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateOneTime();
+                continue;
+            }
+            if(cube2->color[4] != cube3->color[4] )
+            {
+                rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                rotateOneTime();
+                continue;
+            }
+            if(cube3->color[4] != cube6->color[4])
+            {
+                rotateAngle(90,NeHeWidget::zsecond,NeHeWidget::Z);
+                rotateAngle(90,NeHeWidget::zfirst,NeHeWidget::Z);
+                rotateOneTime();
+                continue;
+            }
+            /*else if(cube3->color[3] == cube4->color[3] && cube4->color[3]==cube7->color[3])
+            {
+                rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(180,NeHeWidget::xthird,NeHeWidget::X);
+                rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(180,NeHeWidget::xthird,NeHeWidget::X);
+                rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateOneTime();
+                continue;
+            }
+            else if(cube4->color[5] == cube1->color[5] && cube4->color[5]==cube8->color[5])
+            {
+
+            }
+            else if(cube1->color[2] == cube1->color[2] && cube1->color[2]==cube5->color[2])
+            {
+
+            }*/
+
+        }
+        else if(num ==0 )
+        {
+            rotateAngle(180,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+            rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateAngle(270,NeHeWidget::ythird,NeHeWidget::Y);
+            rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateAngle(180,NeHeWidget::yfirst,NeHeWidget::Y);
+            rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateAngle(90,NeHeWidget::ythird,NeHeWidget::Y);
+            rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+            rotateOneTime();
+            continue;
+        }
+    }
+
+    while(!(cube2->color[4] == cube3->color[4] &&  cube3->color[4] == cube6->color[4]))
+    {
+        rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+        rotateOneTime();
+    }
+    return true;
+}
+
+//第五步
+
+int MainWidget::getYellowNum(Cube *p1, Cube *p2, Cube *p3, Cube *p4)
+{
+    //0前 1后 2下 3上 4右 5左
+    int num  = 0;
+    if(p1->color[1]==Cube::yellow)num=num+1;
+    if(p2->color[1]==Cube::yellow)num=num+1;
+    if(p3->color[1]==Cube::yellow)num=num+1;
+    if(p4->color[1]==Cube::yellow)num=num+1;
+    return num;
+}
+
+bool MainWidget::autoBack5()
+{
+    //0前 1后 2下 3上 4右 5左
+    Cube *cube1,*cube2,*cube3,*cube4;
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ythird,NeHeWidget::zthird);
+    cube2 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ythird,NeHeWidget::zthird);
+    cube3 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::yfirst,NeHeWidget::zthird);
+    cube4 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::yfirst,NeHeWidget::zthird);
+    while (true)
+    {
+       int num = getYellowNum(cube1,cube2,cube3,cube4);
+       if(num==4)return true;
+       if(num==1)
+       {
+            if(cube1->color[1]==Cube::yellow)
+            {
+                if(cube2->color[2]==Cube::yellow)//小鱼1
+                {
+                    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                    rotateOneTime();
+                }
+                else//小鱼2
+                {
+                    rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+                    rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                    rotateOneTime();
+                }
+                continue;
+            }
+            rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+            rotateOneTime();
+            continue;
+       }
+       else if(num==2 )
+       {
+             if(cube1->color[1]!=Cube::yellow && cube1->color[2]==Cube::yellow)
+             {
+                 rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                 rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                 rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                 rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                 rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                 rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+                 rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                 rotateOneTime();
+                  continue;
+             }
+             rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+             rotateOneTime();
+             continue;
+       }
+       else if(num==0)
+       {
+           if(cube1->color[1]!=Cube::yellow && cube1->color[5]==Cube::yellow)
+           {
+               rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+               rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+               rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+               rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+               rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+               rotateAngle(180,NeHeWidget::zthird,NeHeWidget::Z);
+               rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+               rotateOneTime();
+               continue;
+           }
+           rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+           rotateOneTime();
+           continue;
+       }
+    }
+    return true;
+}
+
+//第四步
+bool MainWidget::autoBack4()
+{
+    //0前 1后 2下 3上 4右 5左
+    Cube *cube1,*cube2,*cube3,*cube4,*cube5;
+    cube1 = cubeWidget->findCubeAll(NeHeWidget::xfirst,NeHeWidget::ysecond,NeHeWidget::zthird);
+    cube2 = cubeWidget->findCubeAll(NeHeWidget::xthird,NeHeWidget::ysecond,NeHeWidget::zthird);
+
+    cube3 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::ysecond,NeHeWidget::zsecond);
+
+    cube4 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::yfirst,NeHeWidget::zthird);
+    cube5 = cubeWidget->findCubeAll(NeHeWidget::xsecond,NeHeWidget::ythird,NeHeWidget::zthird);
+
+    while ( !(  cube1->color[1]==Cube::yellow
+           &&cube2->color[1]==Cube::yellow
+           &&cube3->color[1]==Cube::yellow
+           &&cube4->color[1]==Cube::yellow
+           &&cube5->color[1]==Cube::yellow
+              )
+           )
+    {
+            if( (cube1->color[1] == Cube::yellow && cube2->color[1]==Cube::yellow)
+                ||(cube1->color[1] == Cube::yellow && cube4->color[1]==Cube::yellow)
+                ||(cube1->color[1]!=Cube::yellow
+                   &&cube2->color[1]!=Cube::yellow
+                   &&cube4->color[1]!=Cube::yellow
+                   &&cube5->color[1]!=Cube::yellow)    )
+            {
+                rotateAngle(270,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateAngle(270,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                rotateAngle(90,NeHeWidget::xfirst,NeHeWidget::X);
+                rotateAngle(270,NeHeWidget::zthird,NeHeWidget::Z);
+                rotateAngle(90,NeHeWidget::yfirst,NeHeWidget::Y);
+                rotateOneTime();
+                continue;
+            }
+            else// if(cube4->color[1] == Cube::yellow && cube5->color[1]==Cube::yellow)
+            {
+                rotateAngle(90,NeHeWidget::zthird,NeHeWidget::Z);
+                rotateOneTime();
+                continue;
+            }
+
+    }
+
+    return true;
 }
 
 //第三步
@@ -599,7 +1058,7 @@ void MainWidget::onRandBtn()
         rt.xyz   = NeHeWidget::XYZ(xyz);
         listRotateTask.append(rt);
     }
-    randTimer.start(800);
+    randTimer.start(200);
 }
 
 void MainWidget::rotateOneTime()
@@ -608,7 +1067,7 @@ void MainWidget::rotateOneTime()
         cubeWidget->rotateCubef(listRotateTask[0].angle,listRotateTask[0].layer,listRotateTask[0].xyz);
         delete &listRotateTask[0];
         listRotateTask.pop_front();
-         sleep(500);
+        sleep(200);
     }
 }
 
@@ -627,6 +1086,13 @@ void MainWidget::onRandTimer()
 void MainWidget::keyPressEvent(QKeyEvent *e)
 {
     if(e->text().isEmpty())return;
+    if(e->key()==Qt::Key_Q)
+    {
+        test1();
+    }else if(e->key()==Qt::Key_A)
+    {
+        test2();
+    }
     cubeWidget->keyPressEvent(e);
 }
 

@@ -42,6 +42,16 @@ public:
 
     bool autoBack2();
     bool autoBack3();
+    bool autoBack4();
+    int  getYellowNum(Cube*,Cube*,Cube*,Cube*);
+    bool autoBack5();
+    int  getSameColorSide(Cube*,Cube*,Cube*,Cube*);
+    bool autoBack6();
+    int  getSameColorSide7(Cube*,Cube*,Cube*,Cube*,
+                           Cube*,Cube*,Cube*,Cube*);
+    bool autoBack7();
+    void test1();
+    void test2();
 protected:
     void keyPressEvent( QKeyEvent *e );
     void closeEvent(QCloseEvent *);

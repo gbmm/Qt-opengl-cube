@@ -19,7 +19,7 @@ NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
     initCube();
     getLayerCubeZ(rotatecube,othercube,ROTATE_LAYER);
 
-    timeLine = new QTimeLine(200, this);
+    timeLine = new QTimeLine(120, this);
     connect(timeLine, SIGNAL(frameChanged(int)), this, SLOT(rotateCube(int)));
     connect(timeLine,SIGNAL(finished()),this,SLOT(rotateCubeFinished()));
 }
