@@ -61,6 +61,7 @@ public slots:
 
 protected:
   Cube cube[27];
+  Cube *cubefind[3][3][3];
   bool fullscreen;
   GLfloat xRot, yRot, zRot;//旋转的角度
   GLfloat zoom;

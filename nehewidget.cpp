@@ -19,7 +19,7 @@ NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
     initCube();
     getLayerCubeZ(rotatecube,othercube,ROTATE_LAYER);
 
-    timeLine = new QTimeLine(120, this);
+    timeLine = new QTimeLine(100, this);
     connect(timeLine, SIGNAL(frameChanged(int)), this, SLOT(rotateCube(int)));
     connect(timeLine,SIGNAL(finished()),this,SLOT(rotateCubeFinished()));
 }
@@ -38,6 +38,7 @@ void NeHeWidget::initCube()
             for(int i=0;i<3;i++)
             {
                 cube[index++].setXYZ(x+i,y+j,z-k);
+                cubefind[int(x+i+1)][int(y+j+1)][int(z-k+1)] = &cube[index-1];
             }
 }
 
@@ -268,6 +269,9 @@ void NeHeWidget::rotateCubeFinished()
 
 Cube *NeHeWidget::findCube(GLfloat x, GLfloat y, GLfloat z)
 {
+    //qDebug()<<int(x+1)<<int(y+1)<<int(z+1) <<"  "<<x<<y<<z;
+
+    return cubefind[int(x+1)][int(y+1)][int(z+1)];
     for(int i=0;i<9;i++) {
         // qDebug()<<"++"<<rotatecube[i]->x<<rotatecube[i]->y<<rotatecube[i]->z;
         Cube *p = rotatecube[i]->getCubeFromXYZ(x,y,z);
@@ -281,6 +285,10 @@ Cube *NeHeWidget::findCube(GLfloat x, GLfloat y, GLfloat z)
 
 Cube *NeHeWidget::findCubeAll(GLfloat x, GLfloat y, GLfloat z)
 {
+   return cubefind[int(x+1)][int(y+1)][int(z+1)];
+   // qDebug()<<int(x+1)<<int(y+1)<<int(z+1);
+   // if(p==NULL) qDebug()<<"+++++++++++++++++++++++++++++++++++++++++++++++++"<<x<<y<<z;
+  //  return p;
     for(int i=0;i<27;i++) {
         Cube *p = cube[i].getCubeFromXYZ(x,y,z);
         if(p != NULL)

@@ -753,7 +753,6 @@ void MainWidget::autoBackCenter()
         return;
     }
     cube1 = cubeWidget->findCubeAll(-1,0,0);//左面
-
     if(cube1->color[5]==Cube::white)
     {
         rotateAngle(90,NeHeWidget::ysecond,NeHeWidget::Y);
@@ -762,7 +761,6 @@ void MainWidget::autoBackCenter()
     }
 
     cube1 = cubeWidget->findCubeAll(1,0,0);//右面
-
     if(cube1->color[4]==Cube::white)
     {
         rotateAngle(270,NeHeWidget::ysecond,NeHeWidget::Y);
@@ -1081,7 +1079,7 @@ void MainWidget::rotateOneTime()
         cubeWidget->rotateCubef(listRotateTask[0].angle,listRotateTask[0].layer,listRotateTask[0].xyz);
         delete &listRotateTask[0];
         listRotateTask.pop_front();
-        sleep(200);
+        sleep(150);
     }
 }
 
