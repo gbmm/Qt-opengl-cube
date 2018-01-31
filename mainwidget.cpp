@@ -47,15 +47,27 @@ void MainWidget::initUI()
 
 void MainWidget::rotateAngle(int angle,NeHeWidget::LAYER layer,NeHeWidget::XYZ xyz)
 {
-    int i = angle/90;
+    if(angle==270)
+    {
+        RotateTask rt={layer,xyz,NeHeWidget::ANGLE(-90)};
+        listRotateTask.append(rt);
+        return;
+    }
+    RotateTask rt={layer,xyz,NeHeWidget::ANGLE(angle)};
+    listRotateTask.append(rt);
+
+    /*int i = angle/90;
     while (i-->0) {
         RotateTask rt={layer,xyz,NeHeWidget::ANGLE(90)};
         listRotateTask.append(rt);
-    }
+    }*/
 }
 
 void MainWidget::onAutobackBtn()
 {
+    QTime time;
+    time.start();
+
     autoBackCenter();
     while(!calAutoBack1())
     {
@@ -67,7 +79,7 @@ void MainWidget::onAutobackBtn()
         sleep(10);
     }
     autoBack1Last();
-
+//return;
     //第二步
     autoBack2();
     //第三步
@@ -82,6 +94,8 @@ void MainWidget::onAutobackBtn()
     autoBack7();
     autobackBtn->setText("finish");
     qDebug()<<"---------finish------------";
+
+    qDebug()<<time.elapsed()/1000;
 }
 
 //第七步

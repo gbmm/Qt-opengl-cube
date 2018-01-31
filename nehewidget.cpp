@@ -137,22 +137,43 @@ void NeHeWidget::rotateCubeFinished()
     case X:
         for(int i=0;i<9;i++)
         {
-            GLfloat tmpx = rotatecube[i]->y;
-            GLfloat tmpy = rotatecube[i]->z;
             double y = rotatecube[i]->y*tmpcos + rotatecube[i]->z*tmpsin;
             double z = rotatecube[i]->z*tmpcos - rotatecube[i]->y*tmpsin;
-            //
-            //changeCubeColor(rotateangle,X,rotatecube[i]);
-            //qDebug()<<"-----"<<tmpx<<tmpy<<y<<z;
-            Cube *ct = findCube(rotatecube[i]->x,(GLfloat)(-y),(GLfloat)(-z));
-            if (ct!= NULL){
-                ct->color[4] = tmprotatecube[i].color[4];
-                ct->color[5] = tmprotatecube[i].color[5];
 
-                ct->color[0] = tmprotatecube[i].color[3];
-                ct->color[1] = tmprotatecube[i].color[2];
-                ct->color[2] = tmprotatecube[i].color[0];
-                ct->color[3] = tmprotatecube[i].color[1];
+            Cube *ct = findCube(rotatecube[i]->x,(GLfloat)(-y),(GLfloat)(-z));
+
+            if (ct!= NULL)
+            {
+
+                switch(rotateangle)
+                {
+                case A_270:
+                    ct->color[4] = tmprotatecube[i].color[4];
+                    ct->color[5] = tmprotatecube[i].color[5];
+                    ct->color[0] = tmprotatecube[i].color[2];
+                    ct->color[1] = tmprotatecube[i].color[3];
+                    ct->color[2] = tmprotatecube[i].color[1];
+                    ct->color[3] = tmprotatecube[i].color[0];
+                    break;
+                case A_90:
+                    ct->color[4] = tmprotatecube[i].color[4];
+                    ct->color[5] = tmprotatecube[i].color[5];
+                    ct->color[0] = tmprotatecube[i].color[3];
+                    ct->color[1] = tmprotatecube[i].color[2];
+                    ct->color[2] = tmprotatecube[i].color[0];
+                    ct->color[3] = tmprotatecube[i].color[1];
+                    break;
+                case A_180:
+                    ct = findCube(rotatecube[i]->x,(GLfloat)(y),(GLfloat)(z));
+                    ct->color[4] = tmprotatecube[i].color[4];
+                    ct->color[5] = tmprotatecube[i].color[5];
+                    ct->color[0] = tmprotatecube[i].color[1];
+                    ct->color[1] = tmprotatecube[i].color[0];
+                    ct->color[2] = tmprotatecube[i].color[3];
+                    ct->color[3] = tmprotatecube[i].color[2];
+                    break;
+                }
+
             }
            // tmprotatecube[i].setXYZ(rotatecube[i]->x,(GLfloat)(-y),(GLfloat)(-z));
         };
@@ -160,56 +181,85 @@ void NeHeWidget::rotateCubeFinished()
     case Y:
         for(int i=0;i<9;i++)
         {
-            GLfloat tmpx = rotatecube[i]->x;
-            GLfloat tmpy = rotatecube[i]->z;
-
             double x = rotatecube[i]->x*tmpcos + rotatecube[i]->z*tmpsin;
             double z = rotatecube[i]->z*tmpcos - rotatecube[i]->x*tmpsin;
 
-            //qDebug()<<"-----"<<tmpx<<tmpy<<x<<z;
-            //changeCubeColor(rotateangle,Y,rotatecube[i]);
             Cube *ct = findCube((GLfloat)(x),rotatecube[i]->y,(GLfloat)(z));
             if (ct!= NULL){
-                //qDebug()<<"----------"<< ct->color[3]<<x<<z<< ct->y;
+
                 //0前 1后 2下 3上 4右 5左
                 ct->color[2] = tmprotatecube[i].color[2];
                 ct->color[3] = tmprotatecube[i].color[3];
-
-                ct->color[0] = tmprotatecube[i].color[5];
-                ct->color[1] = tmprotatecube[i].color[4];
-                ct->color[4] = tmprotatecube[i].color[0];
-                ct->color[5] = tmprotatecube[i].color[1];
+                switch(rotateangle)
+                {
+                case A_270:
+                    ct->color[0] = tmprotatecube[i].color[4];
+                    ct->color[1] = tmprotatecube[i].color[5];
+                    ct->color[4] = tmprotatecube[i].color[1];
+                    ct->color[5] = tmprotatecube[i].color[0];
+                    break;
+                case A_90:
+                    ct->color[0] = tmprotatecube[i].color[5];
+                    ct->color[1] = tmprotatecube[i].color[4];
+                    ct->color[4] = tmprotatecube[i].color[0];
+                    ct->color[5] = tmprotatecube[i].color[1];
+                    break;
+                case A_180:
+                    ct->color[0] = tmprotatecube[i].color[1];
+                    ct->color[1] = tmprotatecube[i].color[0];
+                    ct->color[4] = tmprotatecube[i].color[5];
+                    ct->color[5] = tmprotatecube[i].color[4];
+                    break;
+                }
             }
-           //tmprotatecube[i].setXYZ((GLfloat)(-x),rotatecube[i]->y,(GLfloat)(-z));
+
         };
         break;
     case Z:
         for(int i=0;i<9;i++)
         {
-            GLfloat tmpx = rotatecube[i]->x;
-            GLfloat tmpy = rotatecube[i]->y;
+
             double x = rotatecube[i]->x*tmpcos + rotatecube[i]->y*tmpsin;
             double y = rotatecube[i]->y*tmpcos - rotatecube[i]->x*tmpsin;
-            //qDebug()<<"-----"<<tmpx<<tmpy<<x<<y;
 
-            //changeCubeColor(rotateangle,Z,rotatecube[i]);
-            //qDebug()<<"--"<<rotatecube[i]->x<<rotatecube[i]->y<<rotatecube[i]->z;
             Cube *ct = findCube((GLfloat)(-x),(GLfloat)(-y),rotatecube[i]->z);
-            if (ct!= NULL){
+            if (ct!= NULL)
+            {
                 //0前 1后 2下 3上 4右 5左
-                ct->color[0] = tmprotatecube[i].color[0];
-                ct->color[1] = tmprotatecube[i].color[1];
 
-                ct->color[2] = tmprotatecube[i].color[5];
-                ct->color[3] = tmprotatecube[i].color[4];
-                ct->color[4] = tmprotatecube[i].color[2];
-                ct->color[5] = tmprotatecube[i].color[3];
+                switch(rotateangle)
+                {
+                case A_270:
+                    ct->color[0] = tmprotatecube[i].color[0];
+                    ct->color[1] = tmprotatecube[i].color[1];
+                    ct->color[2] = tmprotatecube[i].color[4];
+                    ct->color[3] = tmprotatecube[i].color[5];
+                    ct->color[4] = tmprotatecube[i].color[3];
+                    ct->color[5] = tmprotatecube[i].color[2];
+                    break;
+                case A_90:
+                    ct->color[0] = tmprotatecube[i].color[0];
+                    ct->color[1] = tmprotatecube[i].color[1];
+                    ct->color[2] = tmprotatecube[i].color[5];
+                    ct->color[3] = tmprotatecube[i].color[4];
+                    ct->color[4] = tmprotatecube[i].color[2];
+                    ct->color[5] = tmprotatecube[i].color[3];
+                    break;
+                case A_180:
+                    ct = findCube((GLfloat)(x),(GLfloat)(y),rotatecube[i]->z);
+                    ct->color[0] = tmprotatecube[i].color[0];
+                    ct->color[1] = tmprotatecube[i].color[1];
+                    ct->color[2] = tmprotatecube[i].color[3];
+                    ct->color[3] = tmprotatecube[i].color[2];
+                    ct->color[4] = tmprotatecube[i].color[5];
+                    ct->color[5] = tmprotatecube[i].color[4];
+                    break;
+                }
             }
-            //tmprotatecube[i].setXYZ((GLfloat)(-x),(GLfloat)(-y),rotatecube[i]->z);
+
         };
         break;
     }
-    //qDebug()<<rotatecube[26]->x<<rotatecube[26]->y<<rotatecube[26]->z;
     rotateangle = A_0;
     rotateAngle = 0;
     updateGL();
@@ -472,13 +522,13 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
     {
     /*-----------绕Z轴旋转----------*/
     case Qt::Key_W:
-        rotateCubef(A_90,zfirst,Z);
+        rotateCubef(A_180,zfirst,Z);
         break;
     case Qt::Key_E:
-        rotateCubef(A_90,zsecond,Z);
+        rotateCubef(A_180,zsecond,Z);
         break;
     case Qt::Key_R:
-        rotateCubef(A_90,zthird,Z);
+        rotateCubef(A_180,zthird,Z);
         break;
     /*-----------绕X轴旋转----------*/
     case Qt::Key_S:

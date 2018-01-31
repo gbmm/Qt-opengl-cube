@@ -25,7 +25,7 @@ public:
             yfirst=1,ysecond=0,ythird=-1,};
 
  enum XYZ{X,Y,Z};//x y z 坐标轴
- enum ANGLE{A_0=0,A_90=90,A_180=180,A_270=270,A_360=360};//旋转的角度
+ enum ANGLE{A_0=0,A_90=90,A_180=180,A_270=-90,A_360=360};//旋转的角度
 
 protected:
   void initializeGL();

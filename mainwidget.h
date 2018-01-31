@@ -8,6 +8,7 @@
 #include <QList>
 #include <QLabel>
 #include <QThread>
+#include <QDateTime>
 
 namespace Ui {
 class MainWidget;
